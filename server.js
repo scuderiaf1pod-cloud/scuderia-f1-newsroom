@@ -1,4 +1,4 @@
-// server.js (v1.1 - Add Root Route)
+// server.js (v1.2 - Add Wildcard Route)
 
 const express = require('express');
 const path = require('path');
@@ -24,12 +24,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
 
 
-// --- 3. PAGE & API ROUTES ---
-
-// --- NEW: Explicitly serve the index.html file for the homepage ---
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
+// --- 3. API ROUTES (These must come BEFORE the wildcard route) ---
 
 // Route to get the current settings from the database
 app.get('/api/settings', async (req, res) => {
@@ -76,6 +71,12 @@ app.post('/api/settings', async (req, res) => {
         console.error('Error saving settings:', error.message);
         res.status(500).json({ success: false, message: 'Failed to save settings.' });
     }
+});
+
+// --- NEW: Wildcard route to serve the index.html file for any other request ---
+// This will fix the "Not Found" error on Render
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 
