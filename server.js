@@ -1,4 +1,4 @@
-// server.js
+// server.js (v1.1 - Add Root Route)
 
 const express = require('express');
 const path = require('path');
@@ -15,33 +15,35 @@ const supabaseKey = process.env.SUPABASE_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 // This is the password your colleague will use to access the page.
-// IMPORTANT: You will need to set this in your Render environment variables.
 const PAGE_PASSWORD = process.env.SETTINGS_PASSWORD;
 
 // --- 2. MIDDLEWARE ---
-// Serve static files (like index.html) from the 'public' directory
+// Serve static files (like CSS or other images if you add them) from the 'public' directory
 app.use(express.static(path.join(__dirname, 'public')));
 // Parse JSON bodies from incoming requests
 app.use(bodyParser.json());
 
 
-// --- 3. API ROUTES ---
+// --- 3. PAGE & API ROUTES ---
+
+// --- NEW: Explicitly serve the index.html file for the homepage ---
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
 
 // Route to get the current settings from the database
 app.get('/api/settings', async (req, res) => {
     try {
-        // We assume there is only ONE row of settings, with id = 1
         const { data, error } = await supabase
             .from('settings')
             .select('*')
             .eq('id', 1)
-            .single(); // .single() gets one row instead of an array
+            .single();
 
-        if (error && error.code !== 'PGRST116') { // Ignore 'range not found' error for empty tables
+        if (error && error.code !== 'PGRST116') {
             throw error;
         }
-
-        res.json(data || {}); // Send back the settings data or an empty object
+        res.json(data || {});
     } catch (error) {
         console.error('Error fetching settings:', error.message);
         res.status(500).json({ success: false, message: 'Failed to fetch settings.' });
@@ -52,17 +54,15 @@ app.get('/api/settings', async (req, res) => {
 app.post('/api/settings', async (req, res) => {
     const { password, email, phone } = req.body;
 
-    // --- Password Check ---
     if (password !== PAGE_PASSWORD) {
         return res.status(401).json({ success: false, message: 'Invalid password.' });
     }
 
     try {
-        // Use 'upsert' to either update the row with id=1 or create it if it doesn't exist.
         const { error } = await supabase
             .from('settings')
             .upsert({
-                id: 1, // We always want to edit the same row
+                id: 1,
                 recipient_email: email,
                 alert_phone_number: phone,
             })
@@ -71,7 +71,6 @@ app.post('/api/settings', async (req, res) => {
         if (error) {
             throw error;
         }
-
         res.json({ success: true, message: 'Settings saved successfully!' });
     } catch (error) {
         console.error('Error saving settings:', error.message);
