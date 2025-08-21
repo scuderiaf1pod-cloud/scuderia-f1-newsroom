@@ -1,4 +1,4 @@
-// server.js (v1.3 - Repaired with explicit homepage route)
+// server.js (v1.4 - Simplified by removing public folder)
 
 const express = require('express');
 const path = require('path');
@@ -20,8 +20,6 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 const PAGE_PASSWORD = process.env.SETTINGS_PASSWORD;
 
 // --- 2. MIDDLEWARE ---
-// Serve static files (like CSS or other images if you add them) from the 'public' directory
-app.use(express.static(path.join(__dirname, 'public')));
 // Parse JSON bodies from incoming requests, making them available on req.body
 app.use(bodyParser.json());
 

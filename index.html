@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale-1.0">
+    <title>Scuderia F1 Newsroom Settings</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@400;600&family=Orbitron:wght@700&display=swap" rel="stylesheet">
+    <style>
+        /* * ===================================================================
+         * Global Variables & Base Styles
+         * ===================================================================
+         */
+        :root {
+            --f1-red: #e10600;
+            --dark-bg: #15151e;
+            --medium-bg: #2a2a35;
+            --light-text: #ffffff;
+            --medium-text: #a1a1a8;
+            --border-color: #4d4d5a;
+        }
+
+        body {
+            font-family: 'Titillium Web', sans-serif;
+            background-color: var(--dark-bg);
+            /* --- AMENDED: New Realistic Twill Weave Carbon Fiber --- */
+            background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3Cpattern id='c' patternUnits='userSpaceOnUse' width='20' height='20'%3E%3Crect width='20' height='20' fill='%23282828'/%3E%3Cg fill='%23333333'%3E%3Cpolygon points='0,5 5,0 10,0 5,5'/%3E%3Cpolygon points='10,5 15,0 20,0 15,5'/%3E%3Cpolygon points='0,15 5,10 10,10 5,15'/%3E%3Cpolygon points='10,15 15,10 20,10 15,15'/%3E%3C/g%3E%3C/pattern%3E%3C/defs%3E%3Crect width='100%25' height='100%25' fill='url(%23c)'/%3E%3C/svg%3E");
+            color: var(--light-text);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        /* * ===================================================================
+         * Main Container & Header
+         * ===================================================================
+         */
+        .container {
+            background-color: rgba(42, 42, 53, 0.95); /* Added slight transparency */
+            backdrop-filter: blur(4px); /* Frosted glass effect */
+            padding: 40px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            width: 100%;
+            max-width: 420px;
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid var(--f1-red);
+            padding-bottom: 20px;
+        }
+
+        .header img {
+            max-height: 80px;
+            width: auto;
+            flex-shrink: 0; /* Prevents the image from shrinking */
+        }
+
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--light-text);
+            font-size: 30px;
+            font-weight: 700;
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 12px rgba(225, 6, 0, 0.9);
+            line-height: 1.1;
+        }
+
+        /* * ===================================================================
+         * Form Elements
+         * ===================================================================
+         */
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .label-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        label {
+            font-weight: 600;
+            color: var(--medium-text);
+            text-transform: uppercase;
+            font-size: 12px;
+        }
+
+        .info-icon {
+            cursor: pointer;
+            width: 16px;
+            height: 16px;
+            color: var(--medium-text);
+            flex-shrink: 0;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--dark-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 16px;
+            color: var(--light-text);
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--f1-red);
+            box-shadow: 0 0 10px rgba(225, 6, 0, 0.5);
+        }
+
+        button {
+            font-family: 'Orbitron', sans-serif;
+            width: 100%;
+            padding: 15px;
+            background-color: var(--f1-red);
+            color: var(--light-text);
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.4);
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        button:hover {
+            background-color: #ff1e15;
+            transform: translateY(-2px);
+        }
+
+        /* * ===================================================================
+         * Message & Modal Styles
+         * ===================================================================
+         */
+        .message {
+            text-align: center;
+            margin-top: 20px;
+            font-weight: 600;
+            padding: 12px;
+            border-radius: 6px;
+            display: none; /* Hidden by default */
+            font-size: 14px;
+            word-wrap: break-word;
+        }
+
+        .message.success {
+            color: #28a745;
+            background-color: rgba(40, 167, 69, 0.1);
+            border: 1px solid rgba(40, 167, 69, 0.5);
+        }
+
+        .message.error {
+            color: #dc3545;
+            background-color: rgba(220, 53, 69, 0.1);
+            border: 1px solid rgba(220, 53, 69, 0.5);
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(4px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .modal-overlay.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: var(--medium-bg);
+            padding: 30px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            width: 100%;
+            max-width: 400px;
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            cursor: pointer;
+            color: var(--medium-text);
+            width: 24px;
+            height: 24px;
+        }
+
+        .modal-content h2 {
+            margin-top: 0;
+            color: var(--f1-red);
+            font-size: 20px;
+        }
+
+        .modal-content p {
+            color: var(--light-text);
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">
+            <img src="https://i.imgur.com/VQQNVaB.png" alt="Scuderia F1 Logo" onerror="this.onerror=null;this.src='https://placehold.co/80x80/15151e/e10600?text=Logo';">
+            <h1>Scuderia&nbsp;F1<br>Newsroom</h1>
+        </div>
+        <form id="settings-form">
+            <div class="form-group">
+                <div class="label-container">
+                    <label for="email">Daily Briefing Email</label>
+                    <svg class="info-icon" data-title="Daily Briefing Email" data-content="This is the email address where the daily F1 news briefing will be sent each morning." xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2Zm0 2a8 8 0 1 0 0 16 8 8 0 0 0 0-16Zm-1 3v2h2V7h-2Zm0 4v6h2v-6h-2Z"></path></svg>
+                </div>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <div class="label-container">
+                    <label for="phone">Emergency Podcast SMS</label>
+                    <svg class="info-icon" data-title="Emergency Podcast SMS" data-content="This is the phone number that will receive an SMS text alert when a major breaking news story requires an emergency podcast." xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2Zm0 2a8 8 0 1 0 0 16 8 8 0 0 0 0-16Zm-1 3v2h2V7h-2Zm0 4v6h2v-6h-2Z"></path></svg>
+                </div>
+                <input type="tel" id="phone" name="phone">
+            </div>
+            <hr style="border: none; border-top: 1px solid var(--border-color); margin: 30px 0;">
+            <div class="form-group">
+                <label for="password">Enter Password</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <div class="form-group">
+                <label for="confirm-password">Confirm Password</label>
+                <input type="password" id="confirm-password" name="confirm-password" required>
+            </div>
+            <button type="submit">Save Settings</button>
+        </form>
+        <div id="message-box" class="message"></div>
+    </div>
+
+    <!-- Modal Structure -->
+    <div id="info-modal" class="modal-overlay">
+        <div class="modal-content">
+            <svg id="modal-close-btn" class="modal-close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 10.586 16.95 5.636 18.364 7.05 13.414 12l4.95 4.95-1.414 1.414L12 13.414l-4.95 4.95-1.414-1.414L10.586 12 5.636 7.05 7.05 5.636 12 10.586Z"></path></svg>
+            <h2 id="modal-title"></h2>
+            <p id="modal-text-content"></p>
+        </div>
+    </div>
+
+    <script>
+        // --- DOM Element Selection ---
+        const form = document.getElementById('settings-form');
+        const emailInput = document.getElementById('email');
+        const phoneInput = document.getElementById('phone');
+        const passwordInput = document.getElementById('password');
+        const confirmPasswordInput = document.getElementById('confirm-password');
+        const messageBox = document.getElementById('message-box');
+        
+        // --- API Endpoint (Placeholder) ---
+        const apiUrl = '/api/settings';
+
+        // --- Modal Elements and Logic ---
+        const modalOverlay = document.getElementById('info-modal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalTextContent = document.getElementById('modal-text-content');
+        const modalCloseBtn = document.getElementById('modal-close-btn');
+        const infoIcons = document.querySelectorAll('.info-icon');
+
+        const openModal = (icon) => {
+            modalTitle.textContent = icon.dataset.title;
+            modalTextContent.textContent = icon.dataset.content;
+            modalOverlay.classList.add('visible');
+        };
+
+        const closeModal = () => {
+            modalOverlay.classList.remove('visible');
+        };
+
+        infoIcons.forEach(icon => {
+            icon.addEventListener('click', () => openModal(icon));
+        });
+        modalCloseBtn.addEventListener('click', closeModal);
+        modalOverlay.addEventListener('click', (event) => {
+            if (event.target === modalOverlay) {
+                closeModal();
+            }
+        });
+
+        function showMessage(text, type) {
+            messageBox.textContent = text;
+            messageBox.className = `message ${type}`;
+            messageBox.style.display = 'block';
+
+            setTimeout(() => {
+                messageBox.style.display = 'none';
+            }, 4000);
+        }
+
+        // --- Fetch and display current settings on page load (Mocked) ---
+        window.addEventListener('load', () => {
+            try {
+                // MOCK DATA for demonstration as there is no live server
+                const mockSettings = {
+                    recipient_email: 'user@example.com',
+                    alert_phone_number: '555-123-4567'
+                };
+                
+                if (mockSettings) {
+                    emailInput.value = mockSettings.recipient_email || '';
+                    phoneInput.value = mockSettings.alert_phone_number || '';
+                }
+            } catch (error) {
+                console.error('Error loading settings:', error);
+                showMessage('Could not load settings. Displaying defaults.', 'error');
+            }
+        });
+
+        // --- Handle form submission (Mocked) ---
+        form.addEventListener('submit', (event) => {
+            event.preventDefault();
+            
+            if (passwordInput.value !== confirmPasswordInput.value) {
+                showMessage('Passwords do not match.', 'error');
+                return;
+            }
+
+            const formData = {
+                email: emailInput.value,
+                phone: phoneInput.value,
+                password: passwordInput.value,
+            };
+
+            console.log('Submitting data (mock):', formData);
+
+            try {
+                // MOCK SUCCESS RESPONSE for demonstration
+                const mockResult = { message: 'Settings saved successfully!' };
+                showMessage(mockResult.message, 'success');
+                
+                passwordInput.value = '';
+                confirmPasswordInput.value = '';
+
+            } catch (error) {
+                console.error('Error saving settings:', error);
+                showMessage(error.message, 'error');
+            }
+        });
+    </script>
+
+</body>
+</html>
