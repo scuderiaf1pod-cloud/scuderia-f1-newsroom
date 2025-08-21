@@ -197,7 +197,7 @@
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px; /* Adjusted gap */
             transition: border-color 0.3s ease, box-shadow 0.3s ease;
         }
         
@@ -217,8 +217,13 @@
         .select-selected span {
             font-size: 16px;
             color: var(--light-text);
-            flex-grow: 1;
             text-align: center;
+        }
+        
+        .select-selected .country-code-text {
+            font-size: 14px;
+            color: var(--medium-text);
+            font-weight: 600;
         }
 
         .select-items {
@@ -501,6 +506,7 @@
             selectedCountry = country;
             selectedContainer.innerHTML = `
                 <img src="https://flagcdn.com/w40/${country.code.toLowerCase()}.png" class="flag-icon" alt="${country.name} flag" onerror="this.style.display='none'">
+                <span class="country-code-text">${country.code}</span>
                 <span>${country.dial_code}</span>
             `;
             itemsContainer.style.display = 'none';
@@ -516,6 +522,10 @@
             item.addEventListener('click', () => updateSelected(country));
             itemsContainer.appendChild(item);
         });
+
+        // --- AMENDED: Set initial state immediately to prevent lag ---
+        updateSelected(countryData.find(c => c.code === 'CA') || countryData[0]);
+
 
         selectedContainer.addEventListener('click', () => {
             itemsContainer.style.display = itemsContainer.style.display === 'block' ? 'none' : 'block';
@@ -551,16 +561,11 @@
                             }
                         }
                         if (!foundCode) phoneInput.value = fullPhoneNumber;
-                    } else {
-                        updateSelected(countryData.find(c => c.code === 'US') || countryData[0]);
-                    }
-                } else {
-                     updateSelected(countryData.find(c => c.code === 'US') || countryData[0]);
+                    } 
                 }
             } catch (error) {
                 console.error('Error loading settings:', error);
                 showMessage('Could not load current settings.', 'error');
-                updateSelected(countryData.find(c => c.code === 'US') || countryData[0]);
             }
         });
 
