@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale-1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Scuderia F1 Newsroom Settings</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -289,7 +289,7 @@
         const confirmPasswordInput = document.getElementById('confirm-password');
         const messageBox = document.getElementById('message-box');
         
-        // --- API Endpoint (Placeholder) ---
+        // --- API Endpoint ---
         const apiUrl = '/api/settings';
 
         // --- Modal Elements and Logic ---
@@ -326,30 +326,30 @@
 
             setTimeout(() => {
                 messageBox.style.display = 'none';
-            }, 4000);
+            }, 5000); // Increased timeout for better readability
         }
 
-        // --- Fetch and display current settings on page load (Mocked) ---
-        window.addEventListener('load', () => {
+        // --- Fetch and display current settings on page load (LIVE) ---
+        window.addEventListener('load', async () => {
             try {
-                // MOCK DATA for demonstration as there is no live server
-                const mockSettings = {
-                    recipient_email: 'user@example.com',
-                    alert_phone_number: '555-123-4567'
-                };
+                const response = await fetch(apiUrl);
+                if (!response.ok) {
+                    throw new Error('Server responded with an error.');
+                }
+                const settings = await response.json();
                 
-                if (mockSettings) {
-                    emailInput.value = mockSettings.recipient_email || '';
-                    phoneInput.value = mockSettings.alert_phone_number || '';
+                if (settings) {
+                    emailInput.value = settings.recipient_email || '';
+                    phoneInput.value = settings.alert_phone_number || '';
                 }
             } catch (error) {
                 console.error('Error loading settings:', error);
-                showMessage('Could not load settings. Displaying defaults.', 'error');
+                showMessage('Could not load current settings.', 'error');
             }
         });
 
-        // --- Handle form submission (Mocked) ---
-        form.addEventListener('submit', (event) => {
+        // --- Handle form submission (LIVE) ---
+        form.addEventListener('submit', async (event) => {
             event.preventDefault();
             
             if (passwordInput.value !== confirmPasswordInput.value) {
@@ -363,18 +363,31 @@
                 password: passwordInput.value,
             };
 
-            console.log('Submitting data (mock):', formData);
-
             try {
-                // MOCK SUCCESS RESPONSE for demonstration
-                const mockResult = { message: 'Settings saved successfully!' };
-                showMessage(mockResult.message, 'success');
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData),
+                });
+
+                const result = await response.json();
+
+                if (!response.ok) {
+                    // Use the error message from the server if available
+                    throw new Error(result.message || 'An unknown error occurred.');
+                }
+
+                showMessage(result.message, 'success');
                 
+                // Clear password fields after successful save
                 passwordInput.value = '';
                 confirmPasswordInput.value = '';
 
             } catch (error) {
                 console.error('Error saving settings:', error);
+                // Display the specific error message from the catch block
                 showMessage(error.message, 'error');
             }
         });
