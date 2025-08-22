@@ -8,10 +8,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@400;600&family=Orbitron:wght@700&display=swap" rel="stylesheet">
     <style>
-        /* * ===================================================================
-         * Global Variables & Base Styles
-         * ===================================================================
-         */
         :root {
             --f1-red: #e10600;
             --dark-bg: #15151e;
@@ -20,7 +16,6 @@
             --medium-text: #a1a1a8;
             --border-color: #4d4d5a;
         }
-
         body {
             font-family: 'Titillium Web', sans-serif;
             background-color: var(--dark-bg);
@@ -34,11 +29,6 @@
             padding: 20px;
             box-sizing: border-box;
         }
-
-        /* * ===================================================================
-         * Main Container & Header
-         * ===================================================================
-         */
         .container {
             background-color: rgba(42, 42, 53, 0.95);
             backdrop-filter: blur(4px);
@@ -51,7 +41,6 @@
             box-sizing: border-box;
             text-align: center;
         }
-
         .header {
             display: flex;
             align-items: center;
@@ -61,13 +50,11 @@
             border-bottom: 2px solid var(--f1-red);
             padding-bottom: 20px;
         }
-
         .header img {
             max-height: 80px;
             width: auto;
             flex-shrink: 0;
         }
-
         h1 {
             font-family: 'Orbitron', sans-serif;
             color: var(--light-text);
@@ -79,17 +66,11 @@
             text-shadow: 0 0 12px rgba(225, 6, 0, 0.9);
             line-height: 1.1;
         }
-
-        /* * ===================================================================
-         * Form Elements
-         * ===================================================================
-         */
         .form-group {
             margin-bottom: 20px;
             text-align: left;
             position: relative; 
         }
-        
         .name-fields {
             display: flex;
             gap: 15px;
@@ -97,22 +78,18 @@
         .name-fields .form-group {
             flex: 1;
         }
-
-
         .label-container {
             display: flex;
             align-items: center;
             gap: 8px;
             margin-bottom: 8px;
         }
-
         label {
             font-weight: 600;
             color: var(--medium-text);
             text-transform: uppercase;
             font-size: 12px;
         }
-
         .info-icon {
             cursor: pointer;
             width: 16px;
@@ -120,7 +97,6 @@
             color: var(--medium-text);
             flex-shrink: 0;
         }
-
         input {
             width: 100%;
             padding: 12px;
@@ -132,41 +108,18 @@
             color: var(--light-text);
             transition: border-color 0.3s ease, box-shadow 0.3s ease;
         }
-        
-        input[type="password"], input[type="text"]#password, input[type="text"]#confirm-password {
-            padding-right: 40px;
-        }
-
         input:focus {
             outline: none;
             border-color: var(--f1-red);
             box-shadow: 0 0 10px rgba(225, 6, 0, 0.5);
         }
-        
-        .toggle-password {
-            position: absolute;
-            top: 50%;
-            right: 12px;
-            transform: translateY(25%);
-            cursor: pointer;
-            color: var(--medium-text);
-            width: 20px;
-            height: 20px;
-        }
-        
-        .toggle-password:hover {
-            color: var(--light-text);
-        }
-
         .phone-input-container {
             display: flex;
             gap: 8px;
         }
-
         #phone {
             flex: 1 1 auto;
         }
-
         button {
             font-family: 'Orbitron', sans-serif;
             width: 100%;
@@ -182,22 +135,16 @@
             letter-spacing: 2px;
             text-shadow: 0 1px 3px rgba(0,0,0,0.4);
             transition: background-color 0.3s ease, transform 0.2s ease;
+            margin-top: 10px;
         }
-
         button:hover {
             background-color: #ff1e15;
             transform: translateY(-2px);
         }
-
-        /* * ===================================================================
-         * Custom Flag Dropdown
-         * ===================================================================
-         */
         .custom-select-container {
             position: relative;
             flex: 0 0 130px;
         }
-
         .select-selected {
             background-color: var(--dark-bg);
             border: 1px solid var(--border-color);
@@ -209,12 +156,10 @@
             gap: 6px;
             transition: border-color 0.3s ease, box-shadow 0.3s ease;
         }
-        
         .select-selected:hover, .select-selected.select-arrow-active {
              border-color: var(--f1-red);
              box-shadow: 0 0 10px rgba(225, 6, 0, 0.5);
         }
-
         .flag-icon {
             width: 24px;
             height: 18px;
@@ -222,19 +167,16 @@
             flex-shrink: 0;
             object-fit: cover;
         }
-
         .select-selected span {
             font-size: 16px;
             color: var(--light-text);
             text-align: center;
         }
-        
         .select-selected .country-code-text {
             font-size: 14px;
             color: var(--medium-text);
             font-weight: 600;
         }
-
         .select-items {
             position: absolute;
             background-color: var(--medium-bg);
@@ -249,7 +191,6 @@
             overflow-y: auto;
             display: none;
         }
-        
         .select-items div {
             padding: 10px;
             cursor: pointer;
@@ -258,15 +199,9 @@
             gap: 10px;
             font-size: 14px;
         }
-
         .select-items div:hover, .same-as-selected {
             background-color: rgba(225, 6, 0, 0.3);
         }
-        
-        /* * ===================================================================
-         * Message & Modal Styles
-         * ===================================================================
-         */
         .message {
             text-align: center;
             margin-top: 20px;
@@ -277,19 +212,16 @@
             font-size: 14px;
             word-wrap: break-word;
         }
-
         .message.success {
             color: #28a745;
             background-color: rgba(40, 167, 69, 0.1);
             border: 1px solid rgba(40, 167, 69, 0.5);
         }
-
         .message.error {
             color: #dc3545;
             background-color: rgba(220, 53, 69, 0.1);
             border: 1px solid rgba(220, 53, 69, 0.5);
         }
-
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -308,12 +240,10 @@
             padding: 20px;
             box-sizing: border-box;
         }
-
         .modal-overlay.visible {
             opacity: 1;
             visibility: visible;
         }
-
         .modal-content {
             background: var(--medium-bg);
             padding: 30px;
@@ -323,7 +253,6 @@
             max-width: 400px;
             position: relative;
         }
-
         .modal-close {
             position: absolute;
             top: 15px;
@@ -333,13 +262,11 @@
             width: 24px;
             height: 24px;
         }
-
         .modal-content h2 {
             margin-top: 0;
             color: var(--f1-red);
             font-size: 20px;
         }
-
         .modal-content p {
             color: var(--light-text);
             line-height: 1.6;
@@ -385,16 +312,9 @@
                     <input type="tel" id="phone" name="phone">
                 </div>
             </div>
-            <hr style="border: none; border-top: 1px solid var(--border-color); margin: 30px 0;">
-            <div class="form-group">
-                <label for="password">Enter Password</label>
-                <input type="password" id="password" name="password" required>
-                <svg class="toggle-password" id="toggle-password-btn" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm0-2a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path><path d="M12 4C6.477 4 2 12 2 12s4.477 8 10 8 10-8 10-8-4.477-8-10-8Zm0 14a6 6 0 1 1 0-12 6 6 0 0 1 0 12Z"></path></svg>
-            </div>
-            <button type="submit">Save Settings</button>
+            <button type="submit">Add Recipient</button>
         </form>
         <div id="message-box" class="message"></div>
-
     </div>
 
     <!-- Modal Structure -->
@@ -413,7 +333,6 @@
         const lastNameInput = document.getElementById('last-name');
         const emailInput = document.getElementById('email');
         const phoneInput = document.getElementById('phone');
-        const passwordInput = document.getElementById('password');
         const messageBox = document.getElementById('message-box');
         
         const apiUrl = '/api/settings';
@@ -433,13 +352,6 @@
         infoIcons.forEach(icon => icon.addEventListener('click', () => openModal(icon)));
         modalCloseBtn.addEventListener('click', closeModal);
         modalOverlay.addEventListener('click', (e) => (e.target === modalOverlay) && closeModal());
-
-        // --- Password Toggle Logic ---
-        const togglePasswordBtn = document.getElementById('toggle-password-btn');
-        const toggleVisibility = (inputField) => {
-            inputField.type = (inputField.type === 'password') ? 'text' : 'password';
-        };
-        togglePasswordBtn.addEventListener('click', () => toggleVisibility(passwordInput));
 
         function showMessage(text, type) {
             messageBox.textContent = text;
@@ -544,44 +456,15 @@
             }
         });
         
-        // --- UPDATED: Function to fetch and render recipients ---
-        const fetchAndRenderRecipients = async () => {
-            try {
-                const response = await fetch(apiUrl);
-                if (!response.ok) throw new Error('Could not fetch recipients.');
-                const recipients = await response.json();
-                recipientList.innerHTML = ''; // Clear current list
-                if (recipients && recipients.length > 0) {
-                    recipients.forEach(r => {
-                        const li = document.createElement('li');
-                        li.textContent = `${r.first_name} ${r.last_name}`;
-                        recipientList.appendChild(li);
-                    });
-                } else {
-                    recipientList.innerHTML = '<li>No recipients have been added yet.</li>';
-                }
-            } catch (error) {
-                console.error('Error loading recipients:', error);
-                recipientList.innerHTML = '<li>Could not load recipient list.</li>';
-            }
-        };
-
-        // --- Fetch recipients on page load ---
-        window.addEventListener('load', fetchAndRenderRecipients);
-
         // --- Handle form submission ---
         form.addEventListener('submit', async (event) => {
             event.preventDefault();
-
-            // Note: Password confirmation was removed for simplicity of adding users.
-            // You can add it back if needed.
             
             const formData = {
                 first_name: firstNameInput.value,
                 last_name: lastNameInput.value,
                 recipient_email: emailInput.value,
                 alert_phone_number: selectedCountry.dial_code + phoneInput.value,
-                password: passwordInput.value, // Still required for authentication
             };
 
             try {
@@ -593,10 +476,9 @@
                 const result = await response.json();
                 if (!response.ok) throw new Error(result.message || 'An unknown error occurred.');
                 
-                showMessage(result.message, 'success');
-                form.reset(); // Clear all form fields
-                updateSelected(countryData.find(c => c.code === 'CA') || countryData[0]); // Reset dropdown
-                fetchAndRenderRecipients(); // Refresh the list
+                showMessage('Recipient added successfully!', 'success');
+                form.reset(); 
+                updateSelected(countryData.find(c => c.code === 'CA') || countryData[0]);
 
             } catch (error) {
                 console.error('Error saving settings:', error);
@@ -606,4 +488,4 @@
     </script>
 
 </body>
-</ht
+</html>
