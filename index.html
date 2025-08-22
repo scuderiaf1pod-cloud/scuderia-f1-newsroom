@@ -90,7 +90,6 @@
             position: relative; 
         }
         
-        /* NEW: Name fields container */
         .name-fields {
             display: flex;
             gap: 15px;
@@ -265,38 +264,6 @@
         }
         
         /* * ===================================================================
-         * NEW: Recipient List Styles
-         * ===================================================================
-         */
-        .recipient-list-container {
-            margin-top: 30px;
-            text-align: left;
-        }
-        .recipient-list-container h2 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 16px;
-            color: var(--f1-red);
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 10px;
-            margin-bottom: 15px;
-            text-transform: uppercase;
-        }
-        #recipient-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            color: var(--medium-text);
-            font-size: 14px;
-        }
-        #recipient-list li {
-            padding: 8px 0;
-            border-bottom: 1px solid var(--dark-bg);
-        }
-        #recipient-list li:last-child {
-            border-bottom: none;
-        }
-
-        /* * ===================================================================
          * Message & Modal Styles
          * ===================================================================
          */
@@ -387,7 +354,6 @@
             <h1>Scuderia&nbsp;F1<br>Newsroom</h1>
         </div>
         <form id="settings-form">
-            <!-- NEW: Name Fields -->
             <div class="name-fields">
                 <div class="form-group">
                     <label for="first-name">First Name</label>
@@ -429,13 +395,6 @@
         </form>
         <div id="message-box" class="message"></div>
 
-        <!-- NEW: Recipient List -->
-        <div class="recipient-list-container">
-            <h2>Current Recipients</h2>
-            <ul id="recipient-list">
-                <!-- Recipient list will be populated by JS -->
-            </ul>
-        </div>
     </div>
 
     <!-- Modal Structure -->
@@ -456,7 +415,6 @@
         const phoneInput = document.getElementById('phone');
         const passwordInput = document.getElementById('password');
         const messageBox = document.getElementById('message-box');
-        const recipientList = document.getElementById('recipient-list');
         
         const apiUrl = '/api/settings';
 
@@ -648,4 +606,4 @@
     </script>
 
 </body>
-</html>
+</ht
