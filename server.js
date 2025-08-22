@@ -24,7 +24,7 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-// --- UPDATED: API Route to get ALL settings (recipients) ---
+// API Route to get ALL settings (recipients)
 // This is no longer used by the front-end but is kept for potential future use.
 app.get('/api/settings', async (req, res) => {
     try {
@@ -41,7 +41,7 @@ app.get('/api/settings', async (req, res) => {
     }
 });
 
-// --- UPDATED: API Route to INSERT a new setting (recipient) ---
+// API Route to INSERT a new setting (recipient)
 app.post('/api/settings', async (req, res) => {
     // Password check is removed.
     
