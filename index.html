@@ -89,6 +89,16 @@
             text-align: left;
             position: relative; 
         }
+        
+        /* NEW: Name fields container */
+        .name-fields {
+            display: flex;
+            gap: 15px;
+        }
+        .name-fields .form-group {
+            flex: 1;
+        }
+
 
         .label-container {
             display: flex;
@@ -197,7 +207,7 @@
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 6px; /* Adjusted gap */
+            gap: 6px;
             transition: border-color 0.3s ease, box-shadow 0.3s ease;
         }
         
@@ -238,7 +248,7 @@
             margin-top: 4px;
             max-height: 200px;
             overflow-y: auto;
-            display: none; /* Hidden by default */
+            display: none;
         }
         
         .select-items div {
@@ -252,6 +262,38 @@
 
         .select-items div:hover, .same-as-selected {
             background-color: rgba(225, 6, 0, 0.3);
+        }
+        
+        /* * ===================================================================
+         * NEW: Recipient List Styles
+         * ===================================================================
+         */
+        .recipient-list-container {
+            margin-top: 30px;
+            text-align: left;
+        }
+        .recipient-list-container h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 16px;
+            color: var(--f1-red);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+        #recipient-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            color: var(--medium-text);
+            font-size: 14px;
+        }
+        #recipient-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid var(--dark-bg);
+        }
+        #recipient-list li:last-child {
+            border-bottom: none;
         }
 
         /* * ===================================================================
@@ -345,6 +387,18 @@
             <h1>Scuderia&nbsp;F1<br>Newsroom</h1>
         </div>
         <form id="settings-form">
+            <!-- NEW: Name Fields -->
+            <div class="name-fields">
+                <div class="form-group">
+                    <label for="first-name">First Name</label>
+                    <input type="text" id="first-name" name="first-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="last-name">Last Name</label>
+                    <input type="text" id="last-name" name="last-name" required>
+                </div>
+            </div>
+
             <div class="form-group">
                 <div class="label-container">
                     <label for="email">Daily Briefing Email</label>
@@ -371,14 +425,17 @@
                 <input type="password" id="password" name="password" required>
                 <svg class="toggle-password" id="toggle-password-btn" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm0-2a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path><path d="M12 4C6.477 4 2 12 2 12s4.477 8 10 8 10-8 10-8-4.477-8-10-8Zm0 14a6 6 0 1 1 0-12 6 6 0 0 1 0 12Z"></path></svg>
             </div>
-            <div class="form-group">
-                <label for="confirm-password">Confirm Password</label>
-                <input type="password" id="confirm-password" name="confirm-password" required>
-                <svg class="toggle-password" id="toggle-confirm-password-btn" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm0-2a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path><path d="M12 4C6.477 4 2 12 2 12s4.477 8 10 8 10-8 10-8-4.477-8-10-8Zm0 14a6 6 0 1 1 0-12 6 6 0 0 1 0 12Z"></path></svg>
-            </div>
             <button type="submit">Save Settings</button>
         </form>
         <div id="message-box" class="message"></div>
+
+        <!-- NEW: Recipient List -->
+        <div class="recipient-list-container">
+            <h2>Current Recipients</h2>
+            <ul id="recipient-list">
+                <!-- Recipient list will be populated by JS -->
+            </ul>
+        </div>
     </div>
 
     <!-- Modal Structure -->
@@ -393,11 +450,13 @@
     <script>
         // --- DOM Element Selection ---
         const form = document.getElementById('settings-form');
+        const firstNameInput = document.getElementById('first-name');
+        const lastNameInput = document.getElementById('last-name');
         const emailInput = document.getElementById('email');
         const phoneInput = document.getElementById('phone');
         const passwordInput = document.getElementById('password');
-        const confirmPasswordInput = document.getElementById('confirm-password');
         const messageBox = document.getElementById('message-box');
+        const recipientList = document.getElementById('recipient-list');
         
         const apiUrl = '/api/settings';
 
@@ -407,13 +466,11 @@
         const modalTextContent = document.getElementById('modal-text-content');
         const modalCloseBtn = document.getElementById('modal-close-btn');
         const infoIcons = document.querySelectorAll('.info-icon');
-
         const openModal = (icon) => {
             modalTitle.textContent = icon.dataset.title;
             modalTextContent.textContent = icon.dataset.content;
             modalOverlay.classList.add('visible');
         };
-
         const closeModal = () => modalOverlay.classList.remove('visible');
         infoIcons.forEach(icon => icon.addEventListener('click', () => openModal(icon)));
         modalCloseBtn.addEventListener('click', closeModal);
@@ -421,12 +478,10 @@
 
         // --- Password Toggle Logic ---
         const togglePasswordBtn = document.getElementById('toggle-password-btn');
-        const toggleConfirmPasswordBtn = document.getElementById('toggle-confirm-password-btn');
         const toggleVisibility = (inputField) => {
             inputField.type = (inputField.type === 'password') ? 'text' : 'password';
         };
         togglePasswordBtn.addEventListener('click', () => toggleVisibility(passwordInput));
-        toggleConfirmPasswordBtn.addEventListener('click', () => toggleVisibility(confirmPasswordInput));
 
         function showMessage(text, type) {
             messageBox.textContent = text;
@@ -497,11 +552,9 @@
             { name: "Vietnam", code: "VN", dial_code: "+84" },
         ];
         countryData.sort((a, b) => a.name.localeCompare(b.name));
-
         const selectedContainer = document.getElementById('country-code-selected');
         const itemsContainer = document.getElementById('country-code-items');
         let selectedCountry = countryData[0];
-
         function updateSelected(country) {
             selectedCountry = country;
             selectedContainer.innerHTML = `
@@ -512,7 +565,6 @@
             itemsContainer.style.display = 'none';
             selectedContainer.classList.remove('select-arrow-active');
         }
-
         countryData.forEach(country => {
             const item = document.createElement('div');
             item.innerHTML = `
@@ -522,16 +574,11 @@
             item.addEventListener('click', () => updateSelected(country));
             itemsContainer.appendChild(item);
         });
-
-        // --- AMENDED: Set initial state immediately to prevent lag ---
         updateSelected(countryData.find(c => c.code === 'CA') || countryData[0]);
-
-
         selectedContainer.addEventListener('click', () => {
             itemsContainer.style.display = itemsContainer.style.display === 'block' ? 'none' : 'block';
             selectedContainer.classList.toggle('select-arrow-active');
         });
-        
         document.addEventListener('click', (e) => {
             if (!selectedContainer.contains(e.target)) {
                 itemsContainer.style.display = 'none';
@@ -539,45 +586,44 @@
             }
         });
         
-        // --- Fetch and display current settings on page load ---
-        window.addEventListener('load', async () => {
+        // --- UPDATED: Function to fetch and render recipients ---
+        const fetchAndRenderRecipients = async () => {
             try {
                 const response = await fetch(apiUrl);
-                if (!response.ok) throw new Error('Server responded with an error.');
-                const settings = await response.json();
-                
-                if (settings) {
-                    emailInput.value = settings.recipient_email || '';
-                    const fullPhoneNumber = settings.alert_phone_number || '';
-                    if (fullPhoneNumber) {
-                        const sortedCodes = [...countryData].sort((a, b) => b.dial_code.length - a.dial_code.length);
-                        let foundCode = false;
-                        for (const country of sortedCodes) {
-                            if (fullPhoneNumber.startsWith(country.dial_code)) {
-                                updateSelected(country);
-                                phoneInput.value = fullPhoneNumber.substring(country.dial_code.length);
-                                foundCode = true;
-                                break;
-                            }
-                        }
-                        if (!foundCode) phoneInput.value = fullPhoneNumber;
-                    } 
+                if (!response.ok) throw new Error('Could not fetch recipients.');
+                const recipients = await response.json();
+                recipientList.innerHTML = ''; // Clear current list
+                if (recipients && recipients.length > 0) {
+                    recipients.forEach(r => {
+                        const li = document.createElement('li');
+                        li.textContent = `${r.first_name} ${r.last_name}`;
+                        recipientList.appendChild(li);
+                    });
+                } else {
+                    recipientList.innerHTML = '<li>No recipients have been added yet.</li>';
                 }
             } catch (error) {
-                console.error('Error loading settings:', error);
-                showMessage('Could not load current settings.', 'error');
+                console.error('Error loading recipients:', error);
+                recipientList.innerHTML = '<li>Could not load recipient list.</li>';
             }
-        });
+        };
+
+        // --- Fetch recipients on page load ---
+        window.addEventListener('load', fetchAndRenderRecipients);
 
         // --- Handle form submission ---
         form.addEventListener('submit', async (event) => {
             event.preventDefault();
-            if (passwordInput.value !== confirmPasswordInput.value) return showMessage('Passwords do not match.', 'error');
 
+            // Note: Password confirmation was removed for simplicity of adding users.
+            // You can add it back if needed.
+            
             const formData = {
-                email: emailInput.value,
-                phone: selectedCountry.dial_code + phoneInput.value,
-                password: passwordInput.value,
+                first_name: firstNameInput.value,
+                last_name: lastNameInput.value,
+                recipient_email: emailInput.value,
+                alert_phone_number: selectedCountry.dial_code + phoneInput.value,
+                password: passwordInput.value, // Still required for authentication
             };
 
             try {
@@ -588,9 +634,12 @@
                 });
                 const result = await response.json();
                 if (!response.ok) throw new Error(result.message || 'An unknown error occurred.');
+                
                 showMessage(result.message, 'success');
-                passwordInput.value = '';
-                confirmPasswordInput.value = '';
+                form.reset(); // Clear all form fields
+                updateSelected(countryData.find(c => c.code === 'CA') || countryData[0]); // Reset dropdown
+                fetchAndRenderRecipients(); // Refresh the list
+
             } catch (error) {
                 console.error('Error saving settings:', error);
                 showMessage(error.message, 'error');
